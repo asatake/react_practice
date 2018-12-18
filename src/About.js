@@ -77,7 +77,7 @@ class About extends Component {
     super(props);
     this.panes = [
       {
-        menuItem: "Agreement",
+        menuItem: "利用規約",
         render: () => <Tab.Pane>{Agreement()}</Tab.Pane>
       },
       { menuItem: "Profile", render: () => <Tab.Pane>{Profile()}</Tab.Pane> }
