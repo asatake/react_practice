@@ -1,24 +1,43 @@
 import React, { Component } from "react";
 import { Container, Header, Segment, List, Message } from "semantic-ui-react";
-
-const items = [
-  { date: "2018/01/01", body: "Create." },
-  { date: "2018/02/01", body: "New Content added." }
-];
-
-var list = [];
-for (var i in items) {
-  list.push(
-    <List.Item>
-      <List.Content>
-        <List.Header>{items[i].body}</List.Header>
-        <List.Description>{items[i].date}</List.Description>
-      </List.Content>
-    </List.Item>
-  );
-}
+// import axios from "axios";
 
 class Top extends Component {
+  fetchHistories() {
+    // const request = axios.create({
+    //   baseURL: "http://localhost:4000/api"
+    // });
+    // request.get("/history").then(res => {
+    //   this.setState({
+    //     histories: res.data
+    //   });
+    // });
+    return [
+      { date: "2018/01/01", body: "Create Pages." },
+      { date: "2018/02/01", body: "New Content added." }
+    ];
+  }
+
+  renderHistories() {
+    const histories = this.fetchHistories();
+    const list = histories.map((item, index) => 
+      <List.Item>
+        <List.Content>
+          <List.Header>{item.body}</List.Header>
+          <List.Description>{item.date}</List.Description>
+        </List.Content>
+      </List.Item>
+    );
+
+    return (
+      <List divided relaxed>
+        {list}
+      </List>
+    );
+  }
+
+  componentDidMount() {}
+
   render() {
     return (
       <div>
@@ -31,11 +50,7 @@ class Top extends Component {
             content="asatake.comへようこそ"
           />
           <Header as="h2">What's New</Header>
-          <Segment>
-            <List divided relaxed>
-              {list}
-            </List>
-          </Segment>
+          <Segment>{this.renderHistories()}</Segment>
         </Container>
       </div>
     );
