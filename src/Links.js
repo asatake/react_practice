@@ -6,7 +6,7 @@ class Links extends Component {
     return (
       <div>
         <Container>
-          <Header as="h1">Links PAGE</Header>
+          <Header as="h1">Links</Header>
           <Message>準備中</Message>
         </Container>
       </div>
