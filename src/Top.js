@@ -1,42 +1,45 @@
 import React, { Component } from "react";
 import { Container, Header, Segment, List, Message } from "semantic-ui-react";
-// import axios from "axios";
+import axios from "axios";
 
 class Top extends Component {
-  fetchHistories() {
-    // const request = axios.create({
-    //   baseURL: "http://localhost:4000/api"
-    // });
-    // request.get("/history").then(res => {
-    //   this.setState({
-    //     histories: res.data
-    //   });
-    // });
-    return [
-      { date: "2018/01/01", body: "Create Pages." },
-      { date: "2018/02/01", body: "New Content added." }
-    ];
+  constructor() {
+    super();
+    this.state = {
+      histories: []
+    };
   }
 
-  renderHistories() {
-    const histories = this.fetchHistories();
-    const list = histories.map((item, index) => 
-      <List.Item>
-        <List.Content>
-          <List.Header>{item.body}</List.Header>
-          <List.Description>{item.date}</List.Description>
-        </List.Content>
-      </List.Item>
-    );
+  formatHistories(data) {
+    var list = [];
 
-    return (
-      <List divided relaxed>
-        {list}
-      </List>
-    );
+    for (var i in data.data) {
+      var date = new Date(Date.parse(data.data[i].updated_at));
+      list.push({
+        date: date.toLocaleString(),
+        body: data.data[i].description
+      });
+    }
+
+    return list;
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const request = axios.create({
+      baseURL: "http://localhost:4000/api",
+      withCredentials: true,
+      headers: {
+        Accept: "application/json"
+      },
+      responseType: "json"
+    });
+    request.get("/history/10").then(res => {
+      const histories = this.formatHistories(res.data);
+      this.setState({
+        histories: histories
+      });
+    });
+  }
 
   render() {
     return (
@@ -50,7 +53,16 @@ class Top extends Component {
             content="asatake.comへようこそ"
           />
           <Header as="h2">What's New</Header>
-          <Segment>{this.renderHistories()}</Segment>
+          <Segment>
+            <List divided relaxed>
+              {this.state.histories.map((item, index) => (
+                <List.Item>
+                  <List.Header>{item.date}</List.Header>
+                  <List.Description>{item.body}</List.Description>
+                </List.Item>
+              ))}
+            </List>
+          </Segment>
         </Container>
       </div>
     );
